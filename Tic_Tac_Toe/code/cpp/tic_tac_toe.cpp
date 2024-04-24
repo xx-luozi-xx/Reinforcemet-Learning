@@ -37,7 +37,7 @@ namespace tic_tac_toe{
                 board_[pos] = which_round_;
                 which_round_= which_round_==BLACK?WHITE:BLACK;
 
-                return judge_();
+                return judge();
             }else{
                 return BAD_POR;
             }
@@ -47,10 +47,10 @@ namespace tic_tac_toe{
     }
 
     bool Game::is_end()const{
-        return judge_()!= NOT_WIN;
+        return judge()!= NOT_WIN;
     }
 
-    State Game::judge_()const{
+    State Game::judge()const{
         static std::vector<std::vector<int>> pos={
             {0,1,2},
             {3,4,5},

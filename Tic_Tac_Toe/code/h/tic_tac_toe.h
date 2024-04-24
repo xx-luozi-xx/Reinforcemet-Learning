@@ -31,12 +31,12 @@ public:
     //input your operate and return the game state
     State operate(int pos);
     bool is_end() const;
+    State judge()const;
 
 private:
     Piece which_round_ = BLACK;
     std::string board_;
 
-    State judge_()const;
 };
 
 }//namespace
