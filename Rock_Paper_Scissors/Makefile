@@ -35,7 +35,6 @@ $(TARGET): $(OBJECTS)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 	$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
-
 -include $(DEPS)
 
 # 清理目标

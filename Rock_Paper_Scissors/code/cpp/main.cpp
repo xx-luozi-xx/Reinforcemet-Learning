@@ -13,7 +13,7 @@ using namespace rock_paper_scissors;
 
 int main(){
     srand(time(0)^rand());
-    Agent player(3, 3);
+    Agent player("player_init", 3, 3, LEARNING_RATE, 10);
     Game game;
 
     for(int _ = 1; _ <= GAME_ROUND; ++_){
@@ -31,5 +31,7 @@ int main(){
                   << "   reaction:" << to_type(reaction) << '\n'; 
     } 
     
+    player.save(SAVING_PATH);
+
     return 0;
 }

@@ -1,8 +1,5 @@
 # Genetic_Algorithm
-we will start with a simple game.
-
-好了，现在它在看得见对面出什么的情况下已经会玩剪刀石头布了
-
+&emsp;&emsp;这个是从[这里](https://github.com/xx-luozi-xx/Genetic_Algorithm)拷贝过来的。是用遗传算法实现的剪刀石头布。
 
 
 
