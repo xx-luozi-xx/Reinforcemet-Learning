@@ -45,7 +45,7 @@ int main(){
 
         double epsilon;
         if(std::string(TEST_ID) == "0"){
-            epsilon = (30000-_)/double(30000);
+            epsilon = (30000-(_-10000))/double(30000);
             epsilon = std::max(0.0, epsilon);
             epsilon = std::min(1.0, epsilon);
             player_black.set_epsilon(epsilon);
@@ -155,6 +155,9 @@ int main(){
     for(int i = 0; i < rate_white.size(); ++i){
         fout << '\t' << rate_white[i] << ' ';
     }
+    fout.close();
+    
+    system("python -u show.py");
 
     return 0;
 }
