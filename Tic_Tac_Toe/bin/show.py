@@ -36,5 +36,5 @@ def read_and_plot(file_path):
 
 # 调用函数，传入文件路径
 
-for i in range(0, 2):
+for i in range(0, 3):
     read_and_plot(file_path+str(i))

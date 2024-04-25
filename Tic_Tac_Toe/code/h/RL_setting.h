@@ -13,6 +13,6 @@ const double EPSILON = 0.7;// if rand(0,1)<= epsilon then do random action
  *         TEST_ID == "1"时，对白棋恒使用EPSILON=1的随机，对黑棋先EPSILON=0.1的学习，再EPSILON=0的测试
  * 
  */
-const char* TEST_ID = "0";
+const char* TEST_ID = "2";
 }
 

@@ -54,6 +54,10 @@ int main(){
             epsilon = _<=30000?0.1:0;
             player_black.set_epsilon(epsilon);
             player_white.set_epsilon(1);
+        }else if(std::string(TEST_ID) == "2"){
+            epsilon = _<=30000?0.1:0;
+            player_black.set_epsilon(1);
+            player_white.set_epsilon(epsilon);
         }
 
 
