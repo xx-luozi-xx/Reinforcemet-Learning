@@ -1,7 +1,7 @@
 #include "RL_setting.h"
 #include "agent.h"
 #include "tic_tac_toe.h"
-
+#include "luozilib.h"
 
 #include <time.h>   //time()
 #include <stdlib.h> //rand(), srand()
@@ -13,33 +13,22 @@
 #include <tuple>     //pair
 #include <fstream>
 #include <string>
+#include <vector>
 
+using std::string;
+using std::vector;
 using std::pair;
 using namespace RL;
 using namespace tic_tac_toe;
 
 int main(){
     srand(time(0)^rand());
-    Agent player_black("player_black", pow(3,9), 9, LEARNING_RATE, EPSILON, WIN_SCORE);
-    Agent player_white("player_white", pow(3,9), 9, LEARNING_RATE, EPSILON, WIN_SCORE);
+    Agent player_black("player_black", {18, 8, 4, 1}, 9, 9, LEARNING_RATE, EPSILON);
+    Agent player_white("player_white", {18, 8, 4, 1}, 9, 9, LEARNING_RATE, EPSILON);
     player_black.set_name(player_black.name()+"_"+TEST_ID);
     player_white.set_name(player_white.name()+"_"+TEST_ID);
-
-    // while(!game.is_end()){
-    //     int pos = rand()%9;
-    //     game.operate(pos);
-    //     std::string baord = game.get_environment();
-    //     std::cout << pos << '\n';
-    //     std::cout << baord.substr(0,3) << '\n';
-    //     std::cout << baord.substr(3,3) << '\n';
-    //     std::cout << baord.substr(6,3) << '\n';
-    //
-    //     int board_num = env_str_to_int(baord);
-    //     std::cout << board_num << '\n';
-    //     std::string board_str = int_to_env_str(board_num);
-    //     assert(board_str == baord);
-    // }
-
+    
+    printf("%llu %llu\n", sizeof(player_black), sizeof(player_white));
     vector<State> final_history;
     for(int _ = 1; _ <= GAME_ROUND; ++_){
 
@@ -50,6 +39,9 @@ int main(){
             epsilon = std::min(1.0, epsilon);
             player_black.set_epsilon(epsilon);
             player_white.set_epsilon(epsilon);
+
+            player_black.set_epsilon(_<10000?1:0.5);
+            player_white.set_epsilon(_<10000?1:0.5);
         }else if(std::string(TEST_ID) == "1"){
             epsilon = _<=30000?0.1:0;
             player_black.set_epsilon(epsilon);
@@ -62,43 +54,61 @@ int main(){
 
 
         if(_%1000 == 0) std::cout << "round " << _ << "epsilon:" << epsilon << "\n";
+        if(_%100 == 0 and _>39000) std::cout << "round " << _ << "epsilon:" << epsilon << "\n";
 
         Game game;
-        vector<pair<int, int>> history_black;
-        vector<pair<int, int>> history_white;
+        vector<pair<vector<double>, int>> history_black;
+        vector<pair<vector<double>, int>> history_white;
         while(!game.is_end()){
             //black do
+            if(_>=10000) printf("\nB\n");
             while(!game.is_end()){
-                int env = env_str_to_int(game.get_environment()); 
+                string env_str = game.get_environment(); 
+                vector<double> env;
+                for(char i : env_str){
+                    env.push_back(i-'0');
+                }
+                if(_>=10000) printf("reB ");
                 int opr = player_black.reaction(env);
                 State rc = game.operate(opr);
 
                 if(rc != BAD_POR){
                     history_black.push_back({env, opr});
+                    player_black.learn(env, opr, NORMAL_SCORE);
                     break;
                 }else if(rc == BAD_POR){
                     //打你一巴掌，重新下
+                    if(_>=10000) printf("lnB ");
                     player_black.learn(env, opr, ERROR_SCORE);
                     continue;
                 }
             }
 
+            if(_>=10000) printf("\nW\n");
             //white do
             while(!game.is_end()){
-                int env = env_str_to_int(game.get_environment()); 
+                string env_str = game.get_environment(); 
+                vector<double> env;
+                for(char i : env_str){
+                    env.push_back(i-'0');
+                }
+                if(_>=10000) printf("reW ");
                 int opr = player_white.reaction(env);
                 State rc = game.operate(opr);
 
                 if(rc != BAD_POR){
                     history_white.push_back({env, opr});
+                    player_white.learn(env, opr, NORMAL_SCORE);
                     break;
                 }else if(rc == BAD_POR){
                     //打你一巴掌，重新下
+                    if(_>=10000) printf("lnW ");
                     player_white.learn(env, opr, ERROR_SCORE);
                     continue;
                 }
             }
         }
+        // printf("\n-----\n");
         State rc = game.judge();
         final_history.push_back(rc);
         if(rc == BLACK_WIN){
@@ -126,9 +136,9 @@ int main(){
             assert(0);
         }
     }
-
-    player_black.save(SAVING_PATH);
-    player_white.save(SAVING_PATH);
+    printf("\nend");
+    // player_black.save(SAVING_PATH);
+    // player_white.save(SAVING_PATH);
 
     int win_black_cnt = 0;
     int win_white_cnt = 0;

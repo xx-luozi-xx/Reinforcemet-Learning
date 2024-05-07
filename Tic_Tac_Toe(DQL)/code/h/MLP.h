@@ -10,8 +10,9 @@ public:
     MLP(const std::string& file_name);
 
     std::vector<double> val(const std::vector<double>& input)const;
-    std::vector<size_t> shape()const;
-    void learn(const std::vector<double>& input, const std::vector<double>& real_val);
+    const std::vector<size_t>& shape()const;
+    //return loss
+    double learn(const std::vector<double>& input, const std::vector<double>& real_val, double learning_rate);
 
     size_t input_dim()const;
     size_t output_dim()const;

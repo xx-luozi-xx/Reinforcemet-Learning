@@ -4,11 +4,12 @@
 
 namespace tic_tac_toe{
 
-const int WIN_SCORE = 100;
-const int LOSE_SCORE = -100;
+const int WIN_SCORE = 10000;
+const int LOSE_SCORE = -10000;
 const int DRAW_SCORE = 0;
 
-const int ERROR_SCORE = -10000; 
+const int ERROR_SCORE = -100; 
+const int NORMAL_SCORE = 100; 
 
 int env_str_to_int(const std::string& str);
 std::string int_to_env_str(int num);
